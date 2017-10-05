@@ -1,11 +1,8 @@
-//
-//  String.swift
-//  
-//
-//  Created by Mohammad Ali Jafarian on 10/6/17.
-//
+//: create bezierpath from string
 
 import UIKit
+import CoreText
+import PlaygroundSupport
 
 extension String {
     func bezierPath(withFont font: UIFont) -> UIBezierPath {
@@ -49,7 +46,7 @@ extension String {
 
             }
         }
-        // following lines normalize path. this path is created with textMatrix so it should first be normalized to nomral matrix
+        // following lines normalize path
         let lettersRotated = CGMutablePath()
         lettersRotated.addPath(letters, transform: CGAffineTransform(scaleX: 1, y: -1))
         let lettersMoved = CGMutablePath()
@@ -59,3 +56,30 @@ extension String {
         return bezier
     }
 }
+
+class MyViewController : UIViewController {
+    override func loadView() {
+        let view = UIView()
+        view.backgroundColor = .white
+        self.view = view
+    }
+
+    var fillColor = UIColor(red: 238/255, green: 193/255, blue: 112/255, alpha: 1.0).cgColor
+    var lineColor = UIColor(red: 242/255, green: 166/255, blue: 90/255, alpha: 1.0).cgColor
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let holderView = UIView(frame: CGRect(x: 0, y: view.frame.midY , width: view.bounds.width, height: 400))
+        let helloWorldString = "hello world!"
+        let path = helloWorldString.bezierPath(withFont: UIFont.systemFont(ofSize: 64))
+        let shapeLayer = CAShapeLayer(layer: holderView.layer)
+        shapeLayer.path = path.cgPath
+        shapeLayer.fillColor = fillColor
+        shapeLayer.strokeColor = lineColor
+        shapeLayer.lineWidth = 2
+        holderView.layer.addSublayer(shapeLayer)
+        view.addSubview(holderView)
+    }
+}
+// Present the view controller in the Live View window
+PlaygroundPage.current.liveView = MyViewController()
