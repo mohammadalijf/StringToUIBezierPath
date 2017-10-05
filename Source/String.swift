@@ -42,8 +42,11 @@ extension String {
                                   &position)
                 // append glyph path to letters
                 for glyph in glyphs {
-                    if let letter = CTFontCreatePathForGlyph(ctFont, glyph, nil) {
-                        letters.addPath(letter, transform: CGAffineTransform(translationX: position.x, y: position.y))
+                    if let letter = CTFontCreatePathForGlyph(ctFont,
+                                                             glyph, nil) {
+                        letters.addPath(letter,
+                                        transform: CGAffineTransform(translationX: position.x,
+                                                                     y: position.y))
                     }
                 }
 
@@ -51,9 +54,16 @@ extension String {
         }
         // following lines normalize path. this path is created with textMatrix so it should first be normalized to nomral matrix
         let lettersRotated = CGMutablePath()
-        lettersRotated.addPath(letters, transform: CGAffineTransform(scaleX: 1, y: -1))
+        lettersRotated.addPath(letters,
+                               transform: CGAffineTransform(scaleX: 1,
+                                                            y: -1))
         let lettersMoved = CGMutablePath()
-        lettersMoved.addPath(lettersRotated, transform: CGAffineTransform(translationX: 0, y: lettersRotated.boundingBoxOfPath.size.height))
+        lettersMoved.addPath(lettersRotated,
+                             transform: CGAffineTransform(translationX: 0,
+                                                          y: lettersRotated
+                                                            .boundingBoxOfPath
+                                                            .size
+                                                            .height))
         // create UIBezierPath
         let bezier = UIBezierPath(cgPath: lettersMoved)
         return bezier
